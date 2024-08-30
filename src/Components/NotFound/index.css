@@ -1,0 +1,14 @@
+.not-found-bg-container {
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  color: white;
+}
+
+.not-found {
+  color: red;
+  text-align: center;
+}

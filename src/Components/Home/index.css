@@ -1,0 +1,44 @@
+.home-container {
+  background-color: black;
+  color: white;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  align-items: center;
+}
+
+.image {
+  width: 100%;
+
+  border-radius: 10px;
+}
+
+.job-title {
+  color: violet;
+}
+
+.card {
+  width: 130px;
+  height: 40px;
+  border: none;
+  border-radius: 6px;
+  font-size: 18px;
+  color: white;
+  font-weight: bold;
+  font-family: 'Roboto';
+  margin-bottom: 10px;
+  cursor: pointer;
+  background: linear-gradient(to right, skyblue, dodgerblue);
+}
+
+@media screen and (min-width: 768px) {
+  .home-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .image {
+    width: 100%;
+  }
+}
