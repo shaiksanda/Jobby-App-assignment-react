@@ -12,17 +12,160 @@
   background: linear-gradient(to right, white, cyan);
 }
 
-.input-container {
+.input-container-1,
+.input-container-2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(to right, white, cyan);
   padding: 10px;
   border-radius: 10px;
+  width: 100%;
+  margin-top: 20px;
+  /* Ensure padding is included in width calculation */
+  /* Space for fixed header */
+}
+
+.input-container-1 {
+  display: flex; /* Show for smaller screens */
+}
+
+.input-container-2 {
+  display: none; /* Hide for smaller screens */
+  width: 60%;
 }
 
 .hr-custom {
   border: none;
   height: 2px; /* Adjust thickness */
   background-color: red; /* Light gray color */
+}
+
+.search-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.profile-container {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/profile-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  margin: 20px 0px 10px 0px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 10px;
+  width: 100%;
+  height: 30vh;
+}
+
+.profile-heading {
+  margin: 0;
+  font-size: 24px;
+  color: #6366f1;
+}
+
+.short-bio {
+  color: black;
+  font-size: 18px;
+  margin: 4px;
+}
+
+.retry-button {
+  background-color: #ff9800;
+  border: none;
+  border-radius: 8px;
+  width: 120px;
+  height: 35px;
+  margin-top: 20px;
+  cursor: pointer;
+  color: whitesmoke;
+  font-weight: bold;
+}
+
+.hr {
+  margin: 24px 0px 20px 0px;
+  height: 1px;
+  background-color: white;
+  border: none;
+}
+
+.employment-type-container {
+  display: flex;
+  margin: 0;
+  gap: 8px;
+}
+
+.employment-label {
+  margin: 4px;
+}
+
+.container-1 {
+  width: 100%;
+}
+.container-2 {
+  width: 100%;
+}
+
+.job-container {
+  background-color: black;
+  color: white;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+  margin-top: 100px;
+}
+
+.failure-view {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+  text-align: center;
+}
+
+.failure-image {
+  width: 100%;
+}
+
+.failure-heading {
+  color: red;
+  font-size: 16px;
+  margin: 10px 5px 5px 5px;
+}
+
+@media screen and (min-width: 768px) {
+  .job-container {
+    flex-direction: row;
+    padding: 30px;
+  }
+
+  .failure-heading {
+    font-size: 34px;
+  }
+
+  .failure-image {
+    width: 70%;
+  }
+  .container-1 {
+    width: 40%;
+  }
+  .container-2 {
+    width: 60%;
+  }
+  .input-container-1 {
+    display: none; /* Hide for larger screens */
+  }
+
+  .input-container-2 {
+    display: flex; /* Show for larger screens */
+  }
 }
