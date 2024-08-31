@@ -134,6 +134,7 @@
 
 .failure-image {
   width: 100%;
+  margin: 100px 0px 0px 0px;
 }
 
 .failure-heading {
@@ -142,6 +143,17 @@
   margin: 10px 5px 5px 5px;
 }
 
+.clear-filters-button {
+  background-color: #2196f3;
+  margin: 100px 0px 0px 100px;
+  width: 120px;
+  color: white;
+  font-weight: bold;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
 @media screen and (min-width: 768px) {
   .job-container {
     flex-direction: row;
@@ -154,6 +166,7 @@
 
   .failure-image {
     width: 70%;
+    margin: 100px 0px 0px 0px;
   }
   .container-1 {
     width: 40%;

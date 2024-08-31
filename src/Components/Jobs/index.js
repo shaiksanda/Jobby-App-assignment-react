@@ -48,12 +48,15 @@ const salaryRangesList = [
 
 class Jobs extends Component {
   state = {
+    searchInput: '',
     profileData: {},
     jobsData: [],
     isLoadingProfile: false,
     isLoadingJobs: false,
     isProfileFailure: false,
     isJobsFailure: false,
+    selectedEmploymentTypes: [],
+    selectedSalaryRange: '',
   }
 
   componentDidMount() {
@@ -87,11 +90,31 @@ class Jobs extends Component {
     }
   }
 
+  renderNoJobDataView = () => (
+    <div className="failure view">
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/no-jobs-img.png"
+        alt="no jobs"
+        className="failure-image"
+      />
+      <h1 style={{textAlign: 'center', color: 'red'}}>No Jobs Found</h1>
+      <p style={{textAlign: 'center'}}>
+        we could not find any jobs. Try other filters
+      </p>
+    </div>
+  )
+
   getJobsData = async () => {
     this.setState({isLoadingJobs: true})
+    const {
+      searchInput,
+      selectedEmploymentTypes,
+      selectedSalaryRange,
+    } = this.state
+    const employmentTypes = selectedEmploymentTypes.join(',')
 
     const jwtToken = Cookies.get('jwt_token')
-    const url = 'https://apis.ccbp.in/jobs'
+    const url = `https://apis.ccbp.in/jobs?search=${searchInput}&employment_type=${employmentTypes}&minimum_package=${selectedSalaryRange}`
     const options = {
       method: 'GET',
       headers: {
@@ -123,12 +146,13 @@ class Jobs extends Component {
 
   renderJobsDetails = () => {
     const {jobsData} = this.state
+
     console.log(jobsData)
     return (
-      <div>
-        {jobsData.map(each => (
-          <JobItem key={each.id} jobData={each} />
-        ))}
+      <div style={{width: '100%', height: '100%'}}>
+        {jobsData.length === 0
+          ? this.renderNoJobDataView()
+          : jobsData.map(each => <JobItem key={each.id} jobData={each} />)}
       </div>
     )
   }
@@ -210,6 +234,10 @@ class Jobs extends Component {
     return content
   }
 
+  OnChangeInput = event => {
+    this.setState({searchInput: event.target.value}, this.getJobsData)
+  }
+
   renderJobsData = () => {
     const {isLoadingJobs, isJobsFailure} = this.state
     let content
@@ -229,7 +257,61 @@ class Jobs extends Component {
     return content
   }
 
+  toggleEmploymentType = event => {
+    const {selectedEmploymentTypes} = this.state
+    const {value} = event.target
+
+    if (selectedEmploymentTypes.includes(value)) {
+      // Remove the employment type if it's already selected
+      this.setState(
+        prevState => ({
+          selectedEmploymentTypes: prevState.selectedEmploymentTypes.filter(
+            type => type !== value,
+          ),
+        }),
+        this.getJobsData, // Fetch the jobs again after updating the state
+      )
+    } else {
+      // Add the employment type if it's not selected
+      this.setState(
+        prevState => ({
+          selectedEmploymentTypes: [
+            ...prevState.selectedEmploymentTypes,
+            value,
+          ],
+        }),
+        this.getJobsData, // Fetch the jobs again after updating the state
+      )
+    }
+  }
+
+  handleSalaryRangeChange = event => {
+    const {value} = event.target
+    this.setState(
+      {
+        selectedSalaryRange: value,
+      },
+      this.getJobsData, // Fetch the jobs again after updating the state
+    )
+  }
+
+  onClearFilters = () => {
+    this.setState(
+      {
+        selectedEmploymentTypes: [],
+        searchInput: '',
+        selectedSalaryRange: '',
+      },
+      this.getJobsData,
+    )
+  }
+
   render() {
+    const {
+      searchInput,
+      selectedEmploymentTypes,
+      selectedSalaryRange,
+    } = this.state
     const jwtToken = Cookies.get('jwt_token')
     if (jwtToken === undefined) {
       return <Redirect to="/login" />
@@ -243,6 +325,8 @@ class Jobs extends Component {
               <input
                 placeholder="Search..."
                 type="search"
+                value={searchInput}
+                onChange={this.OnChangeInput}
                 className="search-input"
               />
               <hr className="hr-custom" />
@@ -264,8 +348,23 @@ class Jobs extends Component {
                   key={each.employmentTypeId}
                   className="employment-type-container"
                 >
-                  <input type="checkbox" />
-                  <p className="employment-label">{each.label}</p>
+                  <input
+                    style={{cursor: 'pointer'}}
+                    id={each.employmentTypeId}
+                    value={each.employmentTypeId}
+                    onChange={this.toggleEmploymentType}
+                    type="checkbox"
+                    checked={selectedEmploymentTypes.includes(
+                      each.employmentTypeId,
+                    )}
+                  />
+                  <label
+                    style={{cursor: 'pointer'}}
+                    htmlFor={each.employmentTypeId}
+                    className="employment-label"
+                  >
+                    {each.label}
+                  </label>
                 </div>
               ))}
             </div>
@@ -277,10 +376,31 @@ class Jobs extends Component {
                   key={each.salaryRangeId}
                   className="employment-type-container"
                 >
-                  <input type="radio" name="salary" />
-                  <p className="employment-label">{each.label}</p>
+                  <input
+                    id={each.salaryRangeId}
+                    style={{cursor: 'pointer'}}
+                    value={each.salaryRangeId}
+                    onChange={this.handleSalaryRangeChange}
+                    checked={selectedSalaryRange === each.salaryRangeId}
+                    type="radio"
+                    name="salary"
+                  />
+                  <label
+                    htmlFor={each.salaryRangeId}
+                    style={{cursor: 'pointer'}}
+                    className="employment-label"
+                  >
+                    {each.label}
+                  </label>
                 </div>
               ))}
+              <button
+                onClick={this.onClearFilters}
+                className="clear-filters-button"
+                type="button"
+              >
+                Clear Filters
+              </button>
             </div>
           </div>
           <div className="container-2">
@@ -288,6 +408,8 @@ class Jobs extends Component {
               <input
                 placeholder="Search..."
                 type="search"
+                value={searchInput}
+                onChange={this.OnChangeInput}
                 className="search-input"
               />
               <button
